@@ -31,23 +31,7 @@ except ImportError:
 if MEM0_AVAILABLE:
     try:
         # Configure Mem0 with OpenAI (you'll need to set OPENAI_API_KEY)
-        memory = Memory(
-            config={
-                "llm": {
-                    "provider": "openai",
-                    "config": {
-                        "model": "gpt-3.5-turbo",
-                        "temperature": 0.1,
-                    }
-                },
-                "embedder": {
-                    "provider": "openai",
-                    "config": {
-                        "model": "text-embedding-ada-002"
-                    }
-                }
-            }
-        )
+        memory = Memory()
         logger.info("Mem0 initialized successfully")
     except Exception as e:
         logger.error(f"Failed to initialize Mem0: {e}")
@@ -211,11 +195,34 @@ def chat_with_bot():
             })
             
         else:
-            # Fallback response
+            # Fallback response with better intelligence
+            query_words = user_message.lower().split()
+            matching_memories = []
+            
+            for memory_item in fallback_memories:
+                memory_words = memory_item['text'].lower().split()
+                if any(word in memory_words for word in query_words):
+                    matching_memories.append(memory_item)
+            
+            if matching_memories:
+                response = f"I remember you telling me: \"{matching_memories[0]['text'][:100]}{'...' if len(matching_memories[0]['text']) > 100 else ''}\""
+                if len(matching_memories) > 1:
+                    response += f" I also recall: \"{matching_memories[1]['text'][:80]}{'...' if len(matching_memories[1]['text']) > 80 else ''}\""
+            else:
+                response = "I don't have specific memories about that topic, but I'm here to learn! Tell me more about it."
+            
+            # Add contextual response based on message content
+            if any(word in user_message.lower() for word in ['hello', 'hi', 'hey']):
+                response = f"Hello! I'm your memory bot. I have {len(fallback_memories)} memories stored and I'm ready to chat!"
+            elif any(word in user_message.lower() for word in ['memory', 'remember', 'recall']):
+                response = f"I currently have {len(fallback_memories)} memories stored. {response}"
+            elif any(word in user_message.lower() for word in ['help', 'what', 'how']):
+                response = "I'm here to chat with you using the memories you've added. I can search through them and reference relevant information in our conversations!"
+            
             return jsonify({
                 'success': True,
-                'response': "I'm in fallback mode - Mem0 is not available. Please install mem0ai and set up your OpenAI API key for full functionality.",
-                'relevant_memories': 0,
+                'response': response,
+                'relevant_memories': len(matching_memories),
                 'total_memories': len(fallback_memories)
             })
             
@@ -233,10 +240,16 @@ def get_status():
     })
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5001))  # Changed default port to 5001
     debug = os.environ.get('DEBUG', 'False').lower() == 'true'
     
     logger.info(f"Starting Monster Meme Memory server on port {port}")
     logger.info(f"Mem0 available: {MEM0_AVAILABLE}")
+    
+    if not MEM0_AVAILABLE:
+        logger.info("To enable full mem0 functionality:")
+        logger.info("1. Set OPENAI_API_KEY environment variable")
+        logger.info("2. Restart the server")
+        logger.info("3. The bot will use intelligent memory search!")
     
     app.run(host='0.0.0.0', port=port, debug=debug)

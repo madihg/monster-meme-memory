@@ -5,7 +5,10 @@ class MemoryBot {
         this.memories = [];
         this.conversationHistory = [];
         this.isProcessing = false;
-        this.apiBase = window.location.origin; // Use same origin for API calls
+        // Use port 5001 for backend API, fallback to same origin
+        this.apiBase = window.location.origin.includes('5001') 
+            ? window.location.origin 
+            : 'http://localhost:5001';
         
         this.initializeElements();
         this.setupEventListeners();
