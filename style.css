@@ -1,0 +1,289 @@
+/* Monster Meme Memory - Retro Internet Styling */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', serif;
+    background-color: #FFFFFF;
+    color: #000000;
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 12px;
+    border: 2px solid #000000;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+/* Dividers */
+.divider {
+    height: 2px;
+    background-color: #000000;
+    margin: 12px 0;
+}
+
+/* Main Content */
+main {
+    margin: 12px 0;
+}
+
+/* Section Headers */
+h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Memory Input Section */
+.memory-section {
+    margin-bottom: 12px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#memoryInput {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid #000000;
+    font-family: 'Times New Roman', serif;
+    font-size: 14px;
+    background-color: #FFFFFF;
+    color: #000000;
+    resize: vertical;
+    min-height: 80px;
+}
+
+#memoryInput:focus {
+    outline: none;
+    border: 3px solid #000000;
+}
+
+#addMemoryBtn {
+    padding: 8px 12px;
+    border: 2px solid #000000;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: 'Times New Roman', serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    align-self: flex-start;
+}
+
+#addMemoryBtn:hover {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+#addMemoryBtn:active {
+    transform: translateY(1px);
+}
+
+.memory-status {
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid #000000;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    min-height: 20px;
+}
+
+.memory-status.success {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.memory-status.error {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+/* Bot Conversation Section */
+.bot-section {
+    margin-top: 12px;
+}
+
+.chat-container {
+    border: 2px solid #000000;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 8px;
+    overflow-y: auto;
+    max-height: 350px;
+    background-color: #FFFFFF;
+}
+
+.bot-message, .user-message {
+    margin-bottom: 8px;
+    padding: 6px 8px;
+    border: 1px solid #000000;
+    font-size: 13px;
+}
+
+.bot-message {
+    background-color: #FFFFFF;
+    border-left: 4px solid #000000;
+}
+
+.user-message {
+    background-color: #FFFFFF;
+    border-right: 4px solid #000000;
+    text-align: right;
+}
+
+.timestamp {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #000000;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.message {
+    font-family: 'Times New Roman', serif;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 8px;
+    border-top: 2px solid #000000;
+    background-color: #FFFFFF;
+    gap: 8px;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 8px;
+    border: 2px solid #000000;
+    font-family: 'Times New Roman', serif;
+    font-size: 14px;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+#chatInput:focus {
+    outline: none;
+    border: 3px solid #000000;
+}
+
+#sendBtn {
+    padding: 8px 12px;
+    border: 2px solid #000000;
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: 'Times New Roman', serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#sendBtn:hover {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+#sendBtn:active {
+    transform: translateY(1px);
+}
+
+/* Footer */
+footer {
+    margin-top: 12px;
+    text-align: center;
+}
+
+footer p {
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: #000000;
+}
+
+/* Scrollbar Styling */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #FFFFFF;
+    border: 1px solid #000000;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #000000;
+    border: 1px solid #000000;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #000000;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        margin: 0;
+        padding: 8px;
+        border: none;
+    }
+    
+    header h1 {
+        font-size: 20px;
+    }
+    
+    .chat-container {
+        min-height: 300px;
+    }
+    
+    .chat-messages {
+        max-height: 250px;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

@@ -1,0 +1,31 @@
+# Monster Meme Memory - Python Dependencies
+# For mem0 integration and backend services
+
+# Core mem0 dependencies
+mem0ai>=0.0.20
+
+# Web framework for API endpoints
+flask>=2.3.0
+flask-cors>=4.0.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# HTTP requests
+requests>=2.31.0
+
+# JSON handling
+jsonschema>=4.19.0
+
+# Optional: For enhanced memory processing
+openai>=1.0.0
+anthropic>=0.7.0
+
+# Optional: For vector database support
+qdrant-client>=1.6.0
+chromadb>=0.4.0
+
+# Development dependencies
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0

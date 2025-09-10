@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Meme Memory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MONSTER MEME MEMORY</h1>
+            <div class="divider"></div>
+        </header>
+        
+        <main>
+            <!-- Memory Input Section -->
+            <section class="memory-section">
+                <h2>MEMORY INPUT</h2>
+                <div class="input-container">
+                    <textarea 
+                        id="memoryInput" 
+                        placeholder="Enter your memory here..."
+                        rows="4"
+                    ></textarea>
+                    <button id="addMemoryBtn" type="button">ADD MEMORY</button>
+                </div>
+                <div class="memory-status" id="memoryStatus"></div>
+            </section>
+            
+            <div class="divider"></div>
+            
+            <!-- Bot Conversation Section -->
+            <section class="bot-section">
+                <h2>BOT CONVERSATION</h2>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="bot-message">
+                            <span class="timestamp">[SYSTEM]</span>
+                            <span class="message">Hello! I'm your memory bot. Add some memories above, then start chatting with me!</span>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input 
+                            type="text" 
+                            id="chatInput" 
+                            placeholder="Type your message here..."
+                        >
+                        <button id="sendBtn" type="button">SEND</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <div class="divider"></div>
+            <p>Powered by Mem0 | Retro Internet Experience</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
