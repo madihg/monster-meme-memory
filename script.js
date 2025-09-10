@@ -5,10 +5,11 @@ class MemoryBot {
         this.memories = [];
         this.conversationHistory = [];
         this.isProcessing = false;
+        this.apiBase = window.location.origin; // Use same origin for API calls
         
         this.initializeElements();
         this.setupEventListeners();
-        this.loadStoredMemories();
+        this.checkBackendStatus();
     }
     
     initializeElements() {
@@ -46,11 +47,27 @@ class MemoryBot {
         });
     }
     
+    async checkBackendStatus() {
+        try {
+            const response = await fetch(`${this.apiBase}/api/status`);
+            const data = await response.json();
+            
+            if (data.mem0_available) {
+                this.updateMemoryStatus(`Backend connected! Mem0 available with ${data.total_memories} memories.`);
+            } else {
+                this.updateMemoryStatus(`Backend connected (fallback mode). ${data.total_memories} memories stored.`);
+            }
+        } catch (error) {
+            console.log('Backend not available, using local storage fallback');
+            this.loadStoredMemories();
+        }
+    }
+    
     loadStoredMemories() {
         const stored = localStorage.getItem('monsterMemeMemories');
         if (stored) {
             this.memories = JSON.parse(stored);
-            this.updateMemoryStatus(`Loaded ${this.memories.length} memories from storage`);
+            this.updateMemoryStatus(`Loaded ${this.memories.length} memories from local storage`);
         }
     }
     
@@ -58,7 +75,7 @@ class MemoryBot {
         localStorage.setItem('monsterMemeMemories', JSON.stringify(this.memories));
     }
     
-    addMemory() {
+    async addMemory() {
         const memoryText = this.memoryInput.value.trim();
         
         if (!memoryText) {
@@ -66,23 +83,52 @@ class MemoryBot {
             return;
         }
         
-        const memory = {
-            id: Date.now(),
-            text: memoryText,
-            timestamp: new Date().toISOString(),
-            addedAt: new Date().toLocaleString()
-        };
-        
-        this.memories.push(memory);
-        this.saveMemories();
-        
-        this.updateMemoryStatus(`Memory added successfully! (Total: ${this.memories.length})`, 'success');
-        this.memoryInput.value = '';
-        
-        // Auto-focus chat input
-        setTimeout(() => {
-            this.chatInput.focus();
-        }, 100);
+        try {
+            // Try to add memory via backend API
+            const response = await fetch(`${this.apiBase}/api/memories`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: memoryText })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.updateMemoryStatus(`Memory added successfully! (Total: ${data.total_memories})`, 'success');
+                this.memoryInput.value = '';
+                
+                // Auto-focus chat input
+                setTimeout(() => {
+                    this.chatInput.focus();
+                }, 100);
+            } else {
+                throw new Error(data.error || 'Failed to add memory');
+            }
+            
+        } catch (error) {
+            console.log('Backend not available, using local storage');
+            
+            // Fallback to local storage
+            const memory = {
+                id: Date.now(),
+                text: memoryText,
+                timestamp: new Date().toISOString(),
+                addedAt: new Date().toLocaleString()
+            };
+            
+            this.memories.push(memory);
+            this.saveMemories();
+            
+            this.updateMemoryStatus(`Memory added to local storage! (Total: ${this.memories.length})`, 'success');
+            this.memoryInput.value = '';
+            
+            // Auto-focus chat input
+            setTimeout(() => {
+                this.chatInput.focus();
+            }, 100);
+        }
     }
     
     updateMemoryStatus(message, type = '') {
@@ -196,14 +242,31 @@ class MemoryBot {
     }
     
     async getBotResponse(userMessage) {
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-        
-        // Get relevant memories for context
-        const relevantMemories = this.getRelevantMemories(userMessage);
-        
-        // Generate response based on memories and conversation
-        return this.generateResponse(userMessage, relevantMemories);
+        try {
+            // Try to get response from backend API
+            const response = await fetch(`${this.apiBase}/api/chat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                return data.response;
+            } else {
+                throw new Error(data.error || 'Failed to get bot response');
+            }
+            
+        } catch (error) {
+            console.log('Backend not available, using fallback response');
+            
+            // Fallback to local response generation
+            const relevantMemories = this.getRelevantMemories(userMessage);
+            return this.generateResponse(userMessage, relevantMemories);
+        }
     }
     
     getRelevantMemories(query) {
