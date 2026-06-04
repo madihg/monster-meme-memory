@@ -3,61 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monster Meme Memory</title>
+    <title>monster meme memory - latent space games</title>
+    <link rel="stylesheet" href="./brand.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>MONSTER MEME MEMORY</h1>
-            <div class="divider"></div>
-        </header>
-        
-        <main>
-            <!-- Memory Input Section -->
-            <section class="memory-section">
-                <h2>MEMORY INPUT</h2>
-                <div class="input-container">
-                    <textarea 
-                        id="memoryInput" 
-                        placeholder="Enter your memory here..."
-                        rows="4"
-                    ></textarea>
-                    <button id="addMemoryBtn" type="button">ADD MEMORY</button>
-                </div>
-                <div class="memory-status" id="memoryStatus"></div>
-            </section>
-            
-            <div class="divider"></div>
-            
-            <!-- Bot Conversation Section -->
-            <section class="bot-section">
-                <h2>BOT CONVERSATION</h2>
-                <div class="chat-container">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="bot-message">
-                            <span class="timestamp">[SYSTEM]</span>
-                            <span class="message">Hello! I'm your memory bot. Add some memories above, then start chatting with me!</span>
-                        </div>
-                    </div>
-                    <div class="chat-input-container">
-                        <input 
-                            type="text" 
-                            id="chatInput" 
-                            placeholder="Type your message here..."
-                        >
-                        <button id="sendBtn" type="button">SEND</button>
+    <div class="lsg-topbar"><a href="https://oulipo.xyz/works/latent-space-games/">&larr; latent space games</a></div>
+
+    <header class="lsg-header">
+        <h1>monster meme memory</h1>
+        <p class="lsg-caption">feed the bot memories, then talk to it. it keeps what you give it in the browser and tries to recall the right fragment when you speak. a small study of machine memory and how clumsily it remembers.</p>
+    </header>
+
+    <main>
+        <section class="memory-section panel">
+            <label for="memoryInput">memory input</label>
+            <div class="input-container">
+                <textarea
+                    id="memoryInput"
+                    placeholder="enter a memory here"
+                    rows="4"
+                ></textarea>
+                <button id="addMemoryBtn" type="button">add memory</button>
+            </div>
+            <div class="memory-status mono" id="memoryStatus"></div>
+        </section>
+
+        <section class="bot-section">
+            <label>bot conversation</label>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="bot-message">
+                        <span class="timestamp">[system]</span>
+                        <span class="message">add some memories above, then start talking to me.</span>
                     </div>
                 </div>
-            </section>
-        </main>
-        
-        <footer>
-            <div class="divider"></div>
-            <p>Powered by Mem0 | Retro Internet Experience</p>
-        </footer>
-    </div>
-    
+                <div class="chat-input-container">
+                    <input
+                        type="text"
+                        id="chatInput"
+                        placeholder="type your message here"
+                    >
+                    <button id="sendBtn" type="button">send</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="mono">frontend-only. your memories stay in this browser.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>

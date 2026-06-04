@@ -1,138 +1,27 @@
-/* Monster Meme Memory - Retro Internet Styling */
+/* Monster Meme Memory - page styles (brand tokens in brand.css) */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+main { margin: var(--s-5) 0; }
 
-body {
-    font-family: 'Times New Roman', serif;
-    background-color: #FFFFFF;
-    color: #000000;
-    line-height: 1.4;
-    font-size: 14px;
-}
+.memory-section { margin-bottom: var(--s-5); }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 12px;
-    border: 2px solid #000000;
-    min-height: 100vh;
-}
+.input-container { display: flex; flex-direction: column; gap: var(--s-2); }
 
-/* Header */
-header {
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-header h1 {
-    font-size: 24px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-}
-
-/* Dividers */
-.divider {
-    height: 2px;
-    background-color: #000000;
-    margin: 12px 0;
-}
-
-/* Main Content */
-main {
-    margin: 12px 0;
-}
-
-/* Section Headers */
-h2 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Memory Input Section */
-.memory-section {
-    margin-bottom: 12px;
-}
-
-.input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-#memoryInput {
-    width: 100%;
-    padding: 8px;
-    border: 2px solid #000000;
-    font-family: 'Times New Roman', serif;
-    font-size: 14px;
-    background-color: #FFFFFF;
-    color: #000000;
-    resize: vertical;
-    min-height: 80px;
-}
-
-#memoryInput:focus {
-    outline: none;
-    border: 3px solid #000000;
-}
-
-#addMemoryBtn {
-    padding: 8px 12px;
-    border: 2px solid #000000;
-    background-color: #FFFFFF;
-    color: #000000;
-    font-family: 'Times New Roman', serif;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    align-self: flex-start;
-}
-
-#addMemoryBtn:hover {
-    background-color: #000000;
-    color: #FFFFFF;
-}
-
-#addMemoryBtn:active {
-    transform: translateY(1px);
-}
+#memoryInput { width: 100%; resize: vertical; min-height: 80px; }
+#addMemoryBtn { align-self: flex-start; }
 
 .memory-status {
-    margin-top: 8px;
-    padding: 8px;
-    border: 1px solid #000000;
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
+    margin-top: var(--s-2);
+    padding: var(--s-2);
+    border: 1px solid var(--border-soft);
     min-height: 20px;
 }
+.memory-status.success { color: var(--accent-deep); border-color: var(--accent); }
+.memory-status.error { color: var(--ink-85); border-color: var(--border-strong); }
 
-.memory-status.success {
-    background-color: #FFFFFF;
-    color: #000000;
-}
-
-.memory-status.error {
-    background-color: #000000;
-    color: #FFFFFF;
-}
-
-/* Bot Conversation Section */
-.bot-section {
-    margin-top: 12px;
-}
+.bot-section { margin-top: var(--s-5); }
 
 .chat-container {
-    border: 2px solid #000000;
+    border: 1px solid var(--border-strong);
     min-height: 400px;
     display: flex;
     flex-direction: column;
@@ -140,150 +29,62 @@ h2 {
 
 .chat-messages {
     flex: 1;
-    padding: 8px;
+    padding: var(--s-2);
     overflow-y: auto;
     max-height: 350px;
-    background-color: #FFFFFF;
+    background: var(--paper);
 }
 
 .bot-message, .user-message {
-    margin-bottom: 8px;
-    padding: 6px 8px;
-    border: 1px solid #000000;
-    font-size: 13px;
+    margin-bottom: var(--s-2);
+    padding: var(--s-2);
+    border: 1px solid var(--border-soft);
+    font-size: var(--type-size-caption);
+    color: var(--ink-85);
 }
-
-.bot-message {
-    background-color: #FFFFFF;
-    border-left: 4px solid #000000;
-}
-
-.user-message {
-    background-color: #FFFFFF;
-    border-right: 4px solid #000000;
-    text-align: right;
-}
+.bot-message { border-left: 3px solid var(--ink-85); }
+.user-message { border-right: 3px solid var(--accent); text-align: right; }
 
 .timestamp {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    color: #000000;
-    font-weight: bold;
-    margin-right: 8px;
+    font-family: var(--font-mono);
+    font-variation-settings: "slnt" 0, "MONO" 1;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-50);
+    margin-right: var(--s-2);
 }
-
-.message {
-    font-family: 'Times New Roman', serif;
-}
+.message { font-family: var(--font-body); }
 
 .chat-input-container {
     display: flex;
-    padding: 8px;
-    border-top: 2px solid #000000;
-    background-color: #FFFFFF;
-    gap: 8px;
+    padding: var(--s-2);
+    border-top: 1px solid var(--border-strong);
+    gap: var(--s-2);
 }
+#chatInput { flex: 1; }
 
-#chatInput {
-    flex: 1;
-    padding: 8px;
-    border: 2px solid #000000;
-    font-family: 'Times New Roman', serif;
-    font-size: 14px;
-    background-color: #FFFFFF;
-    color: #000000;
-}
+footer { margin-top: var(--s-5); text-align: center; }
+footer p { color: var(--ink-40); }
 
-#chatInput:focus {
-    outline: none;
-    border: 3px solid #000000;
-}
+/* Scrollbar */
+.chat-messages::-webkit-scrollbar { width: 8px; }
+.chat-messages::-webkit-scrollbar-track { background: var(--paper); border-left: 1px solid var(--border-soft); }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--ink-50); }
 
-#sendBtn {
-    padding: 8px 12px;
-    border: 2px solid #000000;
-    background-color: #FFFFFF;
-    color: #000000;
-    font-family: 'Times New Roman', serif;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-#sendBtn:hover {
-    background-color: #000000;
-    color: #FFFFFF;
-}
-
-#sendBtn:active {
-    transform: translateY(1px);
-}
-
-/* Footer */
-footer {
-    margin-top: 12px;
-    text-align: center;
-}
-
-footer p {
-    font-size: 12px;
-    font-family: 'Courier New', monospace;
-    color: #000000;
-}
-
-/* Scrollbar Styling */
-.chat-messages::-webkit-scrollbar {
-    width: 8px;
-}
-
-.chat-messages::-webkit-scrollbar-track {
-    background: #FFFFFF;
-    border: 1px solid #000000;
-}
-
-.chat-messages::-webkit-scrollbar-thumb {
-    background: #000000;
-    border: 1px solid #000000;
-}
-
-.chat-messages::-webkit-scrollbar-thumb:hover {
-    background: #000000;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    .container {
-        margin: 0;
-        padding: 8px;
-        border: none;
-    }
-    
-    header h1 {
-        font-size: 20px;
-    }
-    
-    .chat-container {
-        min-height: 300px;
-    }
-    
-    .chat-messages {
-        max-height: 250px;
-    }
-}
-
-/* Loading Animation */
+/* Loading dot */
 .loading {
     display: inline-block;
-    width: 12px;
-    height: 12px;
-    border: 2px solid #000000;
-    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--ink-50);
     border-top-color: transparent;
+    border-radius: 50%;
     animation: spin 1s ease-in-out infinite;
 }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+@media (max-width: 600px) {
+    .chat-container { min-height: 300px; }
+    .chat-messages { max-height: 250px; }
 }

@@ -5,11 +5,11 @@ class MemoryBot {
         this.memories = [];
         this.conversationHistory = [];
         this.isProcessing = false;
-        // Use port 5001 for backend API, fallback to same origin
-        this.apiBase = window.location.origin.includes('5001') 
-            ? window.location.origin 
-            : 'http://localhost:5001';
-        
+        // Frontend-only. The old Flask/mem0 backend is retired; the piece
+        // runs entirely in the browser on localStorage + keyword recall.
+        this.useBackend = false;
+        this.apiBase = null;
+
         this.initializeElements();
         this.setupEventListeners();
         this.checkBackendStatus();
@@ -44,33 +44,22 @@ class MemoryBot {
         // Auto-focus chat input after memory is added
         this.memoryInput.addEventListener('input', () => {
             if (this.memoryInput.value.trim()) {
-                this.memoryStatus.textContent = 'Ready to add memory...';
+                this.memoryStatus.textContent = 'ready to add memory.';
                 this.memoryStatus.className = 'memory-status';
             }
         });
     }
     
     async checkBackendStatus() {
-        try {
-            const response = await fetch(`${this.apiBase}/api/status`);
-            const data = await response.json();
-            
-            if (data.mem0_available) {
-                this.updateMemoryStatus(`Backend connected! Mem0 available with ${data.total_memories} memories.`);
-            } else {
-                this.updateMemoryStatus(`Backend connected (fallback mode). ${data.total_memories} memories stored.`);
-            }
-        } catch (error) {
-            console.log('Backend not available, using local storage fallback');
-            this.loadStoredMemories();
-        }
+        // Frontend-only: load whatever is in local storage.
+        this.loadStoredMemories();
     }
     
     loadStoredMemories() {
         const stored = localStorage.getItem('monsterMemeMemories');
         if (stored) {
             this.memories = JSON.parse(stored);
-            this.updateMemoryStatus(`Loaded ${this.memories.length} memories from local storage`);
+            this.updateMemoryStatus(`loaded ${this.memories.length} memories.`);
         }
     }
     
@@ -80,58 +69,30 @@ class MemoryBot {
     
     async addMemory() {
         const memoryText = this.memoryInput.value.trim();
-        
+
         if (!memoryText) {
-            this.updateMemoryStatus('Please enter a memory before adding.', 'error');
+            this.updateMemoryStatus('please enter a memory first.', 'error');
             return;
         }
-        
-        try {
-            // Try to add memory via backend API
-            const response = await fetch(`${this.apiBase}/api/memories`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ text: memoryText })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                this.updateMemoryStatus(`Memory added successfully! (Total: ${data.total_memories})`, 'success');
-                this.memoryInput.value = '';
-                
-                // Auto-focus chat input
-                setTimeout(() => {
-                    this.chatInput.focus();
-                }, 100);
-            } else {
-                throw new Error(data.error || 'Failed to add memory');
-            }
-            
-        } catch (error) {
-            console.log('Backend not available, using local storage');
-            
-            // Fallback to local storage
-            const memory = {
-                id: Date.now(),
-                text: memoryText,
-                timestamp: new Date().toISOString(),
-                addedAt: new Date().toLocaleString()
-            };
-            
-            this.memories.push(memory);
-            this.saveMemories();
-            
-            this.updateMemoryStatus(`Memory added to local storage! (Total: ${this.memories.length})`, 'success');
-            this.memoryInput.value = '';
-            
-            // Auto-focus chat input
-            setTimeout(() => {
-                this.chatInput.focus();
-            }, 100);
-        }
+
+        // Frontend-only: store in local storage.
+        const memory = {
+            id: Date.now(),
+            text: memoryText,
+            timestamp: new Date().toISOString(),
+            addedAt: new Date().toLocaleString()
+        };
+
+        this.memories.push(memory);
+        this.saveMemories();
+
+        this.updateMemoryStatus(`memory added. (total: ${this.memories.length})`, 'success');
+        this.memoryInput.value = '';
+
+        // Auto-focus chat input
+        setTimeout(() => {
+            this.chatInput.focus();
+        }, 100);
     }
     
     updateMemoryStatus(message, type = '') {
@@ -175,7 +136,7 @@ class MemoryBot {
         } catch (error) {
             console.error('Error getting bot response:', error);
             this.removeTypingIndicator(typingId);
-            this.addMessageToChat('Sorry, I encountered an error processing your message.', 'bot');
+            this.addMessageToChat('sorry, i hit an error processing that.', 'bot');
         } finally {
             this.isProcessing = false;
             this.sendBtn.disabled = false;
@@ -222,7 +183,7 @@ class MemoryBot {
         
         const messageSpan = document.createElement('span');
         messageSpan.className = 'message';
-        messageSpan.innerHTML = 'Bot is thinking <span class="loading"></span>';
+        messageSpan.innerHTML = 'thinking <span class="loading"></span>';
         
         typingDiv.appendChild(timestampSpan);
         typingDiv.appendChild(messageSpan);
@@ -245,31 +206,9 @@ class MemoryBot {
     }
     
     async getBotResponse(userMessage) {
-        try {
-            // Try to get response from backend API
-            const response = await fetch(`${this.apiBase}/api/chat`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message: userMessage })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                return data.response;
-            } else {
-                throw new Error(data.error || 'Failed to get bot response');
-            }
-            
-        } catch (error) {
-            console.log('Backend not available, using fallback response');
-            
-            // Fallback to local response generation
-            const relevantMemories = this.getRelevantMemories(userMessage);
-            return this.generateResponse(userMessage, relevantMemories);
-        }
+        // Frontend-only: recall by keyword match and generate a response.
+        const relevantMemories = this.getRelevantMemories(userMessage);
+        return this.generateResponse(userMessage, relevantMemories);
     }
     
     getRelevantMemories(query) {
